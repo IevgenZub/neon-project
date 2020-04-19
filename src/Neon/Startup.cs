@@ -11,6 +11,7 @@ using Neon.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Neon.Hubs;
 
 namespace Neon
 {
@@ -40,6 +41,7 @@ namespace Neon
                 .AddIdentityServerJwt();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSignalR();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -80,6 +82,7 @@ namespace Neon
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<HomeHub>("/homeHub");
             });
 
             app.UseSpa(spa =>
