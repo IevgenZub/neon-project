@@ -1,1 +1,1 @@
-# neon-project
+# neon
