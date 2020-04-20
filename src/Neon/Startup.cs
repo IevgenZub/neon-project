@@ -43,6 +43,7 @@ namespace Neon
                 {
                     facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                    facebookOptions.SaveTokens = true;
                 });
 
             services.AddControllersWithViews();

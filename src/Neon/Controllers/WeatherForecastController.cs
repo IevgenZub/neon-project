@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,6 +30,14 @@ namespace Neon.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            var access_token = HttpContext.GetTokenAsync("access_token").Result;
+            using (var httpClient = new HttpClient())
+            {
+                var response = httpClient
+                    .GetAsync("https://graph.facebook.com/me?fields=id,name&access_token=" + access_token).Result;
+            }
+
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
