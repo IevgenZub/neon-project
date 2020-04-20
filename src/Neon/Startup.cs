@@ -89,7 +89,7 @@ namespace Neon
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<HomeHub>("/homeHub");
+                endpoints.MapHub<LobbyHub>("/lobbyHub");
             });
 
             app.UseSpa(spa =>
