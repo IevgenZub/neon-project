@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { UserInfo } from '../user-info';
 
 @Component({
     selector: 'app-lobby',
     templateUrl: './lobby.component.html'
 })
 export class LobbyComponent implements OnInit {
-  divMessages: HTMLDivElement;
-  tbMessage: HTMLInputElement;
-  btnSend: HTMLButtonElement;
-  connection: signalR.HubConnection;
+  private connection: signalR.HubConnection;
+  private users: BehaviorSubject<Array<UserInfo>>;
+  public users$: Observable<Array<UserInfo>>;
 
   ngOnInit(): void {
-    this.divMessages = document.querySelector("#divMessages");
-    this.tbMessage = document.querySelector("#tbMessage");
-    this.btnSend = document.querySelector("#btnSend");
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl("/lobbyHub")
       .build();
 
+    this.users = new BehaviorSubject([]);
+    this.users$ = this.users.asObservable();
+
     this.connection.on("userConnected", (username: string, id: string) => {
-      console.log(username, id);
+      const user = {name: username, id: id }
+      this.users.next([...this.users.getValue(), user]);
     });
 
     this.connection.on("userDisconnected", (id: string) => {
