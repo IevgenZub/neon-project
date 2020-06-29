@@ -1,4 +1,6 @@
 export interface UserInfo {
-  name: string;
   id: string;
+  name: string;
+  imageUrl: string;
+  profileUrl: string;
 }

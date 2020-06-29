@@ -1,4 +1,7 @@
 <h2>Lobby</h2>
 <div *ngFor='let user of users$ | async'>
-  {{user.name}}
+    <figure>
+      <img src={{user.imageUrl}} />
+      <figcaption>{{user.name}}</figcaption>
+    </figure>
 </div>

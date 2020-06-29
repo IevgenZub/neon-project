@@ -8,9 +8,9 @@ namespace Neon.Hubs
 {
     public class LobbyHub: Hub
     {
-        public async Task NewOnlineUser(string username, string id)
+        public async Task NewOnlineUser(string id, string username)
         {
-            await Clients.All.SendAsync("userConnected", username, id);
+            await Clients.All.SendAsync("userConnected", id, username);
         }
 
         public async Task RemoveOnlineUser(string id)

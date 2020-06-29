@@ -20,8 +20,14 @@ export class LobbyComponent implements OnInit {
     this.users = new BehaviorSubject([]);
     this.users$ = this.users.asObservable();
 
-    this.connection.on("userConnected", (username: string, id: string) => {
-      const user = {name: username, id: id }
+    this.connection.on("userConnected", (id: string, username: string) => {
+      const user = {
+        id: id,
+        name: username,
+        imageUrl: `https://graph.facebook.com/${id}/picture?type=large`,
+        profileUrl: `https://facebook.com/${id}`
+      };
+
       this.users.next([...this.users.getValue(), user]);
     });
 
@@ -54,8 +60,8 @@ export class LobbyComponent implements OnInit {
   newFbUserOnline() {
     window['FB'].api('/me',
       { fields: 'id, last_name, first_name, email' },
-      (userInfo) => {
-        this.connection.send("NewOnlineUser", userInfo.email, userInfo.id);
+      userInfo => {
+        this.connection.send("NewOnlineUser", userInfo.id, `${userInfo.first_name} ${userInfo.last_name}`);
       }
     );
   }
