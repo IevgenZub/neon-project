@@ -1,11 +1,14 @@
 import * as signalR from "@microsoft/signalr";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { UserInfo } from "./user-info";
+import { Topic } from "./topic";
 
 export class SignalrService {
   private hubConnection: signalR.HubConnection;
   private users: BehaviorSubject<Array<UserInfo>>;
   public users$: Observable<Array<UserInfo>>;
+  private topics: BehaviorSubject<Array<Topic>>;
+  public topics$: Observable<Array<Topic>>;
 
   constructor() { }
 
@@ -18,15 +21,24 @@ export class SignalrService {
     this.users = new BehaviorSubject([]);
     this.users$ = this.users.asObservable();
 
-    this.hubConnection.on("userConnected", (id: string, username: string) => {
-      const user = {
-        id: id,
-        name: username,
-        imageUrl: `https://graph.facebook.com/${id}/picture?type=large`,
-        profileUrl: `https://facebook.com/${id}`
-      };
+    this.topics = new BehaviorSubject([
+      { id: '1', name: 'Music', description: 'Upcoming music events, releases' },
+      { id: '2', name: 'Sports', description: 'Sport events, players' },
+      { id: '3', name: 'Books', description: 'Books review' }]);
 
-      this.users.next([...this.users.getValue(), user]);
+    this.topics$ = this.topics.asObservable();
+
+    this.hubConnection.on("userConnected", (id: string, username: string) => {
+      if (this.users.getValue().filter(u => u.id === id).length === 0) {
+        const user = {
+          id: id,
+          name: username,
+          imageUrl: `https://graph.facebook.com/${id}/picture?type=normal`,
+          profileUrl: `https://facebook.com/${id}`
+        };
+
+        this.users.next([...this.users.getValue(), user]);
+      }
     });
 
     this.hubConnection.on("userDisconnected", (id: string) => {

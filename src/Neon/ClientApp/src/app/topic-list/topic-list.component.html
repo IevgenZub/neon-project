@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-6">
+    <h4>Topics</h4>
+  </div>
+  <div class="col-6" >
+    <button style="float:right" class="btn btn-primary">New Topic</button>
+  </div>
+</div>
+<div class="row" style="margin-top:10px; margin-bottom:10px">
+  <div class="col-4" *ngFor='let topic of topics$ | async'>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{topic.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Topic</h6>
+        <p class="card-text">{{topic.description}}</p>
+        <a href="#" class="card-link">Open</a>
+        <a href="#" class="card-link">Follow</a>
+      </div>
+    </div>
+  </div>
+</div>

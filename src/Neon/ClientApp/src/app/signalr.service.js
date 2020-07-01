@@ -57,14 +57,22 @@ var SignalrService = /** @class */ (function () {
                     .build();
                 this.users = new rxjs_1.BehaviorSubject([]);
                 this.users$ = this.users.asObservable();
+                this.topics = new rxjs_1.BehaviorSubject([
+                    { id: '1', name: 'Music', description: 'Upcoming music events, releases' },
+                    { id: '2', name: 'Sports', description: 'Sport events, players' },
+                    { id: '3', name: 'Books', description: 'Books review' }
+                ]);
+                this.topics$ = this.topics.asObservable();
                 this.hubConnection.on("userConnected", function (id, username) {
-                    var user = {
-                        id: id,
-                        name: username,
-                        imageUrl: "https://graph.facebook.com/" + id + "/picture?type=large",
-                        profileUrl: "https://facebook.com/" + id
-                    };
-                    _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
+                    if (_this.users.getValue().filter(function (u) { return u.id === id; }).length === 0) {
+                        var user = {
+                            id: id,
+                            name: username,
+                            imageUrl: "https://graph.facebook.com/" + id + "/picture?type=normal",
+                            profileUrl: "https://facebook.com/" + id
+                        };
+                        _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
+                    }
                 });
                 this.hubConnection.on("userDisconnected", function (id) {
                     console.log(id);

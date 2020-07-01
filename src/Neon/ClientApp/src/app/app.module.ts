@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { LobbyComponent } from './lobby/lobby.component';
+import { TopicListComponent } from './topic-list/topic-list.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
@@ -15,12 +17,15 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 
 import { SignalrService } from './signalr.service'
 
+
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    LobbyComponent
+    LobbyComponent,
+    TopicListComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
