@@ -14,8 +14,7 @@ export class UserListComponent implements OnInit  {
     
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.signalrService.startConnection();
+  ngOnInit() {
     this.users$ = this.signalrService.users$
   }
 }

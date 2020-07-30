@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SignalrService } from './signalr.service';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  ngOnInit(): void {
+  constructor(private signalrService: SignalrService) {
+
+  }
+
+  async ngOnInit(): Promise<void> {
     this.fbLibrary();
+    await this.signalrService.startConnection();
   }
 
   fbLibrary() {
@@ -30,11 +36,6 @@ export class AppComponent implements OnInit {
       js.src = "https://connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
-  }
-
-  login() {
-
 
   }
 }

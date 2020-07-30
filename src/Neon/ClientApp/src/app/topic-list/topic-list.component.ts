@@ -14,8 +14,7 @@ export class TopicListComponent implements OnInit  {
     
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.signalrService.startConnection();
+  ngOnInit() {
     this.topics$ = this.signalrService.topics$
   }
 }
