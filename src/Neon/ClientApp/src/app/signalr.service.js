@@ -43,6 +43,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SignalrService = void 0;
 var signalR = require("@microsoft/signalr");
 var rxjs_1 = require("rxjs");
 var SignalrService = /** @class */ (function () {
@@ -58,9 +59,10 @@ var SignalrService = /** @class */ (function () {
                 this.users = new rxjs_1.BehaviorSubject([]);
                 this.users$ = this.users.asObservable();
                 this.topics = new rxjs_1.BehaviorSubject([
-                    { id: '1', name: 'Music', description: 'Upcoming music events, releases' },
-                    { id: '2', name: 'Sports', description: 'Sport events, players' },
-                    { id: '3', name: 'Books', description: 'Books review' }
+                    { id: '1', name: 'Science', description: '' },
+                    { id: '2', name: 'History', description: '' },
+                    { id: '3', name: 'Sport', description: '' },
+                    { id: '4', name: 'Random', description: '' }
                 ]);
                 this.topics$ = this.topics.asObservable();
                 this.hubConnection.on("userConnected", function (id, username) {

@@ -22,9 +22,10 @@ export class SignalrService {
     this.users$ = this.users.asObservable();
 
     this.topics = new BehaviorSubject([
-      { id: '1', name: 'Music', description: 'Upcoming music events, releases' },
-      { id: '2', name: 'Sports', description: 'Sport events, players' },
-      { id: '3', name: 'Books', description: 'Books review' }]);
+      { id: '1', name: 'Science', description: '' },
+      { id: '2', name: 'History', description: '' },
+      { id: '3', name: 'Sport', description: '' },
+      { id: '4', name: 'Random', description: '' }]);
 
     this.topics$ = this.topics.asObservable();
 
