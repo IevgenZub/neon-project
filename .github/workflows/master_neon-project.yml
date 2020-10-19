@@ -18,7 +18,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.0.103'
+        dotnet-version: '3.1.x'
 
     - name: Build with dotnet
       run: dotnet build src/Neon.sln --configuration Release
