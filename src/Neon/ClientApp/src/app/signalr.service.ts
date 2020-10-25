@@ -51,7 +51,6 @@ export class SignalrService {
         const user = {
           id: id,
           name: username,
-          imageUrl: `https://graph.facebook.com/${id}/picture?type=normal`,
           profileUrl: `https://facebook.com/${id}`
         };
 

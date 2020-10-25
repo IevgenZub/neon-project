@@ -1,12 +1,17 @@
 <h2>Lobby</h2>
+<h3>The questions is</h3>
+<div *ngIf="(question$ | async) as question; else loading">
+  <p style="font-size:xx-large">{{question.text}}</p>
+</div>
+<ng-template #loading>
+  Loading...
+</ng-template>
+
 <h3 class="text-center">Users Online</h3>
 <div class="row">
-  <div class="col-3" *ngFor='let user of users$ | async'>
-    <figure>
-      <img src={{user.imageUrl}} />
-      <figcaption style="font-size:smaller">{{user.name}}</figcaption>
-    </figure>
-  </div>
+  <ul *ngFor='let user of users$ | async'>
+    <li>{{user.name}}</li>
+  </ul>
 </div>
 
 

@@ -88,7 +88,6 @@ var SignalrService = /** @class */ (function () {
                         var user = {
                             id: id,
                             name: username,
-                            imageUrl: "https://graph.facebook.com/" + id + "/picture?type=normal",
                             profileUrl: "https://facebook.com/" + id
                         };
                         _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
