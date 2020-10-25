@@ -1,5 +1,5 @@
 import * as signalR from "@microsoft/signalr";
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { UserInfo } from "./user-info";
 import { Question } from "./question";
 
@@ -7,14 +7,14 @@ export class SignalrService {
   private hubConnection: signalR.HubConnection;
   private users: BehaviorSubject<Array<UserInfo>>;
   public users$: Observable<Array<UserInfo>>;
-  private questions: BehaviorSubject<Array<Question>>;
-  public questions$: Observable<Array<Question>>;
+  private question: Subject<Question>;
+  public question$: Observable<Question>;
 
   public async startConnection(): Promise<void> {
     this.users = new BehaviorSubject([]);
     this.users$ = this.users.asObservable();
-    this.questions = new BehaviorSubject([]);
-    this.questions$ = this.questions.asObservable();
+    this.question = new Subject();
+    this.question$ = this.question.asObservable();
 
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('/lobbyHub')
@@ -37,7 +37,7 @@ export class SignalrService {
 
       this.hubConnection.stream("StreamQuestions").subscribe(
         {
-          next: question => this.questions.next([...this.questions.getValue(), question]),
+          next: question => this.question.next(question),
           error: _ => (_),
           complete: () => console.log("Completed")
         });

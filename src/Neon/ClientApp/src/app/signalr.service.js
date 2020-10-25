@@ -55,8 +55,8 @@ var SignalrService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.users = new rxjs_1.BehaviorSubject([]);
                 this.users$ = this.users.asObservable();
-                this.questions = new rxjs_1.BehaviorSubject([]);
-                this.questions$ = this.questions.asObservable();
+                this.question = new rxjs_1.Subject();
+                this.question$ = this.question.asObservable();
                 this.hubConnection = new signalR.HubConnectionBuilder()
                     .withUrl('/lobbyHub')
                     .build();
@@ -77,7 +77,7 @@ var SignalrService = /** @class */ (function () {
                         }
                     });
                     _this.hubConnection.stream("StreamQuestions").subscribe({
-                        next: function (question) { return _this.questions.next(__spreadArrays(_this.questions.getValue(), [question])); },
+                        next: function (question) { return _this.question.next(question); },
                         error: function (_) { return (_); },
                         complete: function () { return console.log("Completed"); }
                     });

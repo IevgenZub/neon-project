@@ -9,7 +9,7 @@ import { UserInfo } from '../user-info';
   templateUrl: './lobby.component.html'
 })
 export class LobbyComponent implements OnInit {
-  public questions$: Observable<Array<Question>>;
+  public question$: Observable<Question>;
   public users$: Observable<Array<UserInfo>>;
 
   constructor(private signalrService: SignalrService) {
@@ -17,10 +17,10 @@ export class LobbyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.questions$ = this.signalrService.questions$;
+    this.question$ = this.signalrService.question$;
     this.users$ = this.signalrService.users$;
 
-    this.questions$.subscribe(value => console.log(value));
+    this.question$.subscribe(value => console.log(value));
   }
 }
 
