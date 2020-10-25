@@ -13,9 +13,9 @@ namespace Neon.Hubs
             _questionTicker = questionTicker;
         }
 
-        public async Task NewOnlineUser(string id, string username)
+        public async Task NewOnlineUser(string id, string username, string imageUrl)
         {
-            await Clients.All.SendAsync("userConnected", id, username);
+            await Clients.All.SendAsync("userConnected", id, username, imageUrl);
         }
 
         public async Task RemoveOnlineUser(string id)

@@ -2,4 +2,5 @@ export interface UserInfo {
   id: string;
   name: string;
   profileUrl: string;
+  imageUrl: string;
 }

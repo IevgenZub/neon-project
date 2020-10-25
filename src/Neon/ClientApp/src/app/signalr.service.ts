@@ -46,12 +46,13 @@ export class SignalrService {
 
     // Server event handlers
 
-    this.hubConnection.on("userConnected", (id: string, username: string) => {
+    this.hubConnection.on("userConnected", (id: string, username: string, userImageUrl: string) => {
       if (this.users.getValue().filter(u => u.id === id).length === 0) {
         const user = {
           id: id,
           name: username,
-          profileUrl: `https://facebook.com/${id}`
+          profileUrl: `https://facebook.com/${id}`,
+          imageUrl: userImageUrl
         };
 
         this.users.next([...this.users.getValue(), user]);
@@ -65,9 +66,10 @@ export class SignalrService {
 
   private newFbUserOnline() {
     window['FB'].api('/me',
-      { fields: 'id, last_name, first_name, email' },
+      { fields: 'id, last_name, first_name, email, picture' },
       userInfo => {
-        this.hubConnection.send("NewOnlineUser", userInfo.id, `${userInfo.first_name} ${userInfo.last_name}`);
+        console.log(userInfo);
+        this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name, userInfo.picture.data.url);
       }
     );
   }

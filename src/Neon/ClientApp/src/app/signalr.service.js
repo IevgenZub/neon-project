@@ -83,12 +83,13 @@ var SignalrService = /** @class */ (function () {
                     });
                 }).catch(function (err) { return document.write(err); });
                 // Server event handlers
-                this.hubConnection.on("userConnected", function (id, username) {
+                this.hubConnection.on("userConnected", function (id, username, userImageUrl) {
                     if (_this.users.getValue().filter(function (u) { return u.id === id; }).length === 0) {
                         var user = {
                             id: id,
                             name: username,
-                            profileUrl: "https://facebook.com/" + id
+                            profileUrl: "https://facebook.com/" + id,
+                            imageUrl: userImageUrl
                         };
                         _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
                     }
@@ -102,8 +103,9 @@ var SignalrService = /** @class */ (function () {
     };
     SignalrService.prototype.newFbUserOnline = function () {
         var _this = this;
-        window['FB'].api('/me', { fields: 'id, last_name, first_name, email' }, function (userInfo) {
-            _this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name + " " + userInfo.last_name);
+        window['FB'].api('/me', { fields: 'id, last_name, first_name, email, picture' }, function (userInfo) {
+            console.log(userInfo);
+            _this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name, userInfo.picture.data.url);
         });
     };
     return SignalrService;
