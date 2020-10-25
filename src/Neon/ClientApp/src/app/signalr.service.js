@@ -100,6 +100,17 @@ var SignalrService = /** @class */ (function () {
                             }, { scope: 'email' });
                         }
                     });
+                    _this.hubConnection.stream("StreamQuestions").subscribe({
+                        next: function (question) {
+                            console.log("Next: " + question.text);
+                        },
+                        error: function (error) {
+                            console.log("My error: " + error);
+                        },
+                        complete: function () {
+                            console.log("Completed");
+                        }
+                    });
                 }).catch(function (err) { return document.write(err); });
                 return [2 /*return*/];
             });

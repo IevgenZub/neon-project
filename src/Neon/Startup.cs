@@ -46,6 +46,8 @@ namespace Neon
                     facebookOptions.SaveTokens = true;
                 });
 
+            services.AddSingleton<QuestionTicker>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();

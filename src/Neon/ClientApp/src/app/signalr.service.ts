@@ -65,6 +65,19 @@ export class SignalrService {
           }, { scope: 'email' });
         }
       });
+
+      this.hubConnection.stream("StreamQuestions").subscribe({
+        next: function (question) {
+          console.log("Next: " + question.text);
+        },
+        error: function (error) {
+          console.log("My error: " + error);
+        },
+        complete: function () {
+          console.log("Completed")
+        }
+      });
+
     }).catch(err => document.write(err));
   }
 
