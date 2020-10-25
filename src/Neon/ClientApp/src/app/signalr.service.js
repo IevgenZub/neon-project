@@ -82,7 +82,6 @@ var SignalrService = /** @class */ (function () {
                         complete: function () { return console.log("Completed"); }
                     });
                 }).catch(function (err) { return document.write(err); });
-                // Server event handlers
                 this.hubConnection.on("userConnected", function (id, username, userImageUrl) {
                     if (_this.users.getValue().filter(function (u) { return u.id === id; }).length === 0) {
                         var user = {
@@ -94,19 +93,13 @@ var SignalrService = /** @class */ (function () {
                         _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
                     }
                 });
-                this.hubConnection.on("userDisconnected", function (id) {
-                    console.log(id);
-                });
                 return [2 /*return*/];
             });
         });
     };
     SignalrService.prototype.newFbUserOnline = function () {
         var _this = this;
-        window['FB'].api('/me', { fields: 'id, last_name, first_name, email, picture' }, function (userInfo) {
-            console.log(userInfo);
-            _this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name, userInfo.picture.data.url);
-        });
+        window['FB'].api('/me', { fields: 'id, last_name, first_name, email, picture' }, function (userInfo) { return _this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name, userInfo.picture.data.url); });
     };
     return SignalrService;
 }());

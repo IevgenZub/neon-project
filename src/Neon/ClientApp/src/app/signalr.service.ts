@@ -36,15 +36,13 @@ export class SignalrService {
       });
 
       this.hubConnection.stream("StreamQuestions").subscribe(
-        {
-          next: question => this.question.next(question),
-          error: _ => (_),
-          complete: () => console.log("Completed")
-        });
+      {
+        next: question => this.question.next(question),
+        error: _ => (_),
+        complete: () => console.log("Completed")
+      });
 
     }).catch(err => document.write(err));
-
-    // Server event handlers
 
     this.hubConnection.on("userConnected", (id: string, username: string, userImageUrl: string) => {
       if (this.users.getValue().filter(u => u.id === id).length === 0) {
@@ -58,19 +56,13 @@ export class SignalrService {
         this.users.next([...this.users.getValue(), user]);
       }
     });
-
-    this.hubConnection.on("userDisconnected", (id: string) => {
-      console.log(id);
-    });
   }
 
   private newFbUserOnline() {
     window['FB'].api('/me',
-      { fields: 'id, last_name, first_name, email, picture' },
-      userInfo => {
-        console.log(userInfo);
-        this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name, userInfo.picture.data.url);
-      }
+      {fields: 'id, last_name, first_name, email, picture'},
+      userInfo => this.hubConnection.send("NewOnlineUser",
+        userInfo.id, userInfo.first_name, userInfo.picture.data.url)
     );
   }
 }

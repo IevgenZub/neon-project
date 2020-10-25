@@ -18,11 +18,6 @@ namespace Neon.Hubs
             await Clients.All.SendAsync("userConnected", id, username, imageUrl);
         }
 
-        public async Task RemoveOnlineUser(string id)
-        {
-            await Clients.All.SendAsync("userDisconnected", id);
-        }
-
         public ChannelReader<Question> StreamQuestions()
         {
             return _questionTicker.StreamQuestions().AsChannelReader(10);
