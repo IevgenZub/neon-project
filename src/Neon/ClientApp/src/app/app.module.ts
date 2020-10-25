@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { LobbyComponent } from './lobby/lobby.component';
-import { TopicListComponent } from './topic-list/topic-list.component';
 import { UserListComponent } from './user-list/user-list.component';
 
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
@@ -24,7 +23,6 @@ import { SignalrService } from './signalr.service'
     NavMenuComponent,
     HomeComponent,
     LobbyComponent,
-    TopicListComponent,
     UserListComponent
   ],
   imports: [

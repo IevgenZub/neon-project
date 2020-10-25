@@ -53,44 +53,18 @@ var SignalrService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
+                this.users = new rxjs_1.BehaviorSubject([]);
+                this.users$ = this.users.asObservable();
                 this.hubConnection = new signalR.HubConnectionBuilder()
                     .withUrl('/lobbyHub')
                     .build();
-                this.users = new rxjs_1.BehaviorSubject([]);
-                this.users$ = this.users.asObservable();
-                this.topics = new rxjs_1.BehaviorSubject([
-                    { id: '1', name: 'Science', description: '' },
-                    { id: '2', name: 'History', description: '' },
-                    { id: '3', name: 'Sport', description: '' },
-                    { id: '4', name: 'Random', description: '' }
-                ]);
-                this.topics$ = this.topics.asObservable();
-                this.hubConnection.on("userConnected", function (id, username) {
-                    if (_this.users.getValue().filter(function (u) { return u.id === id; }).length === 0) {
-                        var user = {
-                            id: id,
-                            name: username,
-                            imageUrl: "https://graph.facebook.com/" + id + "/picture?type=normal",
-                            profileUrl: "https://facebook.com/" + id
-                        };
-                        _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
-                    }
-                });
-                this.hubConnection.on("userDisconnected", function (id) {
-                    console.log(id);
-                });
                 this.hubConnection.start().then(function () {
                     window['FB'].getLoginStatus(function (response) {
                         if (response.status === 'connected') {
-                            // The user is logged in and has authenticated your
-                            // app, and response.authResponse supplies
-                            // the user's ID, a valid access token, a signed
-                            // request, and the time the access token 
                             _this.newFbUserOnline();
                         }
                         else {
                             window['FB'].login(function (response) {
-                                console.log('login response', response);
                                 if (response.authResponse) {
                                     _this.newFbUserOnline();
                                 }
@@ -112,6 +86,21 @@ var SignalrService = /** @class */ (function () {
                         }
                     });
                 }).catch(function (err) { return document.write(err); });
+                // Server event handlers
+                this.hubConnection.on("userConnected", function (id, username) {
+                    if (_this.users.getValue().filter(function (u) { return u.id === id; }).length === 0) {
+                        var user = {
+                            id: id,
+                            name: username,
+                            imageUrl: "https://graph.facebook.com/" + id + "/picture?type=normal",
+                            profileUrl: "https://facebook.com/" + id
+                        };
+                        _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
+                    }
+                });
+                this.hubConnection.on("userDisconnected", function (id) {
+                    console.log(id);
+                });
                 return [2 /*return*/];
             });
         });
