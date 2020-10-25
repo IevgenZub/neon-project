@@ -1,15 +1,20 @@
 import * as signalR from "@microsoft/signalr";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { UserInfo } from "./user-info";
+import { Question } from "./question";
 
 export class SignalrService {
   private hubConnection: signalR.HubConnection;
   private users: BehaviorSubject<Array<UserInfo>>;
   public users$: Observable<Array<UserInfo>>;
+  private questions: BehaviorSubject<Array<Question>>;
+  public questions$: Observable<Array<Question>>;
 
   public async startConnection(): Promise<void> {
     this.users = new BehaviorSubject([]);
     this.users$ = this.users.asObservable();
+    this.questions = new BehaviorSubject([]);
+    this.questions$ = this.questions.asObservable();
 
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('/lobbyHub')
@@ -30,17 +35,12 @@ export class SignalrService {
         }
       });
 
-      this.hubConnection.stream("StreamQuestions").subscribe({
-        next: function (question) {
-          console.log("Next: " + question.text);
-        },
-        error: function (error) {
-          console.log("My error: " + error);
-        },
-        complete: function () {
-          console.log("Completed")
-        }
-      });
+      this.hubConnection.stream("StreamQuestions").subscribe(
+        {
+          next: question => this.questions.next([...this.questions.getValue(), question]),
+          error: _ => (_),
+          complete: () => console.log("Completed")
+        });
 
     }).catch(err => document.write(err));
 

@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { LobbyComponent } from './lobby/lobby.component';
-import { UserListComponent } from './user-list/user-list.component';
 
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
@@ -22,8 +21,7 @@ import { SignalrService } from './signalr.service'
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    LobbyComponent,
-    UserListComponent
+    LobbyComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
