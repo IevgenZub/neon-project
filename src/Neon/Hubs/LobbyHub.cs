@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -35,5 +36,11 @@ namespace Neon.Hubs
         {
             return _questionTicker.StreamQuestions().AsChannelReader(10);
         }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Task.FromResult(_users.RemoveAll(u => u.ConnectionId == Context.ConnectionId));
+        }
+
     }
 }

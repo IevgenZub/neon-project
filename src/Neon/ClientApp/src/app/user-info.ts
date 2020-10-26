@@ -3,5 +3,6 @@ export class User {
     public id: string,
     public name: string,
     public imageUrl: string,
-    public profileUrl: string) { }
+    public profileUrl: string,
+    public connectionId: string) { }
 }

@@ -11,5 +11,6 @@ namespace Neon.Contracts
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public string ProfileUrl { get; set; }
+        public string ConnectionId { get; set; }
     }
 }
