@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SignalrService } from '../signalr.service';
-import { UserInfo } from '../user-info';
+import { User } from '../user-info';
 import { Question } from '../question';
 
 @Component({
@@ -10,7 +10,7 @@ import { Question } from '../question';
 })
 export class LobbyComponent implements OnInit {
   public question$: Observable<Question>;
-  public users$: Observable<Array<UserInfo>>;
+  public users$: Observable<Array<User>>;
 
   constructor(private signalrService: SignalrService) {}
 

@@ -46,6 +46,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalrService = void 0;
 var signalR = require("@microsoft/signalr");
 var rxjs_1 = require("rxjs");
+var user_info_1 = require("./user-info");
 var SignalrService = /** @class */ (function () {
     function SignalrService() {
     }
@@ -53,14 +54,21 @@ var SignalrService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                this.users = new rxjs_1.BehaviorSubject([]);
-                this.users$ = this.users.asObservable();
+                this.hubConnection = new signalR.HubConnectionBuilder()
+                    .withUrl("/lobbyHub")
+                    .build();
                 this.question = new rxjs_1.Subject();
                 this.question$ = this.question.asObservable();
-                this.hubConnection = new signalR.HubConnectionBuilder()
-                    .withUrl('/lobbyHub')
-                    .build();
                 this.hubConnection.start().then(function () {
+                    _this.hubConnection.stream("StreamQuestions").subscribe({
+                        next: function (question) { return _this.question.next(question); },
+                        error: function (_) { return (_); },
+                        complete: function () { return console.log("Completed"); }
+                    });
+                    _this.hubConnection.invoke("GetUsersOnline").then(function (users) {
+                        _this.users = new rxjs_1.BehaviorSubject(users);
+                        _this.users$ = _this.users.asObservable();
+                    });
                     window['FB'].getLoginStatus(function (response) {
                         if (response.status === 'connected') {
                             _this.newFbUserOnline();
@@ -76,20 +84,9 @@ var SignalrService = /** @class */ (function () {
                             }, { scope: 'email' });
                         }
                     });
-                    _this.hubConnection.stream("StreamQuestions").subscribe({
-                        next: function (question) { return _this.question.next(question); },
-                        error: function (_) { return (_); },
-                        complete: function () { return console.log("Completed"); }
-                    });
                 }).catch(function (err) { return document.write(err); });
-                this.hubConnection.on("userConnected", function (id, username, userImageUrl) {
-                    if (_this.users.getValue().filter(function (u) { return u.id === id; }).length === 0) {
-                        var user = {
-                            id: id,
-                            name: username,
-                            profileUrl: "https://facebook.com/" + id,
-                            imageUrl: userImageUrl
-                        };
+                this.hubConnection.on("userConnected", function (user) {
+                    if (_this.users.getValue().filter(function (u) { return u.id === user.id; }).length === 0) {
                         _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
                     }
                 });
@@ -99,7 +96,9 @@ var SignalrService = /** @class */ (function () {
     };
     SignalrService.prototype.newFbUserOnline = function () {
         var _this = this;
-        window['FB'].api('/me', { fields: 'id, last_name, first_name, email, picture' }, function (userInfo) { return _this.hubConnection.send("NewOnlineUser", userInfo.id, userInfo.first_name, userInfo.picture.data.url); });
+        window["FB"].api("/me", { fields: "id, last_name, first_name, email, picture" }, function (userInfo) {
+            return _this.hubConnection.send("NewOnlineUser", new user_info_1.User(userInfo.id, userInfo.first_name, userInfo.picture.data.url, ""));
+        });
     };
     return SignalrService;
 }());

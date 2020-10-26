@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Neon
+namespace Neon.Contracts
 {
     public class Question
     {

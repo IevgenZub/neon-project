@@ -1,11 +1,15 @@
-﻿using System.Threading.Channels;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Neon.Contracts;
 
 namespace Neon.Hubs
 {
     public class LobbyHub: Hub
     {
+        private static List<User> _users = new List<User>();
         private readonly QuestionTicker _questionTicker;
 
         public LobbyHub(QuestionTicker questionTicker)
@@ -13,9 +17,18 @@ namespace Neon.Hubs
             _questionTicker = questionTicker;
         }
 
-        public async Task NewOnlineUser(string id, string username, string imageUrl)
+        public async Task NewOnlineUser(User user)
         {
-            await Clients.All.SendAsync("userConnected", id, username, imageUrl);
+            if (!_users.Any(u => u.Id == user.Id))
+            {
+                _users.Add(user);
+                await Clients.All.SendAsync("userConnected", user);
+            }
+        }
+
+        public List<User> GetUsersOnline()
+        {
+            return _users;
         }
 
         public ChannelReader<Question> StreamQuestions()
