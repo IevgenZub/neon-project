@@ -10,12 +10,19 @@ namespace Neon.Hubs
 {
     public class LobbyHub: Hub
     {
-        private static List<User> _users = new List<User>();
+        private static readonly List<User> _users = new List<User>();
         private readonly QuestionTicker _questionTicker;
 
         public LobbyHub(QuestionTicker questionTicker)
         {
             _questionTicker = questionTicker;
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            var user = _users.Single(u => u.ConnectionId == Context.ConnectionId);
+            _users.Remove(user);
+            await Clients.All.SendAsync("userDisconnected", user);
         }
 
         public async Task NewOnlineUser(User user)
@@ -35,13 +42,6 @@ namespace Neon.Hubs
         public ChannelReader<Question> StreamQuestions()
         {
             return _questionTicker.StreamQuestions().AsChannelReader(10);
-        }
-
-        public override async Task OnDisconnectedAsync(Exception exception)
-        {
-            var user = _users.Single(u => u.ConnectionId == Context.ConnectionId);
-            _users.Remove(user);
-            await Clients.All.SendAsync("userDisconnected", user);
         }
     }
 }
