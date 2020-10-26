@@ -52,54 +52,52 @@ var SignalrService = /** @class */ (function () {
     }
     SignalrService.prototype.startConnection = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var users;
             var _this = this;
             return __generator(this, function (_a) {
-                this.hubConnection = new signalR.HubConnectionBuilder()
-                    .withUrl("/lobbyHub")
-                    .build();
-                this.question = new rxjs_1.Subject();
-                this.question$ = this.question.asObservable();
-                this.hubConnection.start().then(function () {
-                    _this.hubConnection.stream("StreamQuestions").subscribe({
-                        next: function (question) { return _this.question.next(question); },
-                        error: function (_) { return (_); },
-                        complete: function () { return console.log("Completed"); }
-                    });
-                    _this.hubConnection.invoke("GetUsersOnline").then(function (users) {
-                        _this.users = new rxjs_1.BehaviorSubject(users);
-                        _this.users$ = _this.users.asObservable();
-                    });
-                    window['FB'].getLoginStatus(function (response) {
-                        if (response.status === 'connected') {
-                            _this.newFbUserOnline();
-                        }
-                        else {
-                            window['FB'].login(function (response) {
-                                if (response.authResponse) {
+                switch (_a.label) {
+                    case 0:
+                        this.hubConnection = new signalR.HubConnectionBuilder()
+                            .withUrl("/lobbyHub")
+                            .build();
+                        this.question = new rxjs_1.Subject();
+                        this.question$ = this.question.asObservable();
+                        return [4 /*yield*/, this.hubConnection.start()];
+                    case 1:
+                        _a.sent();
+                        this.hubConnection.stream("StreamQuestions").subscribe({
+                            next: function (question) { return _this.question.next(question); },
+                            error: function (_) { return (_); },
+                            complete: function () { return console.log("Completed"); }
+                        });
+                        return [4 /*yield*/, this.hubConnection.invoke("GetUsersOnline")];
+                    case 2:
+                        users = _a.sent();
+                        this.users = new rxjs_1.BehaviorSubject(users);
+                        this.users$ = this.users.asObservable();
+                        return [4 /*yield*/, window['FB'].getLoginStatus(function (response) {
+                                if (response.status === 'connected') {
                                     _this.newFbUserOnline();
                                 }
                                 else {
-                                    console.log('User login failed');
+                                    window['FB'].login(function (response) {
+                                        if (response.authResponse) {
+                                            _this.newFbUserOnline();
+                                        }
+                                        else {
+                                            console.log('User login failed');
+                                        }
+                                    }, { scope: 'email' });
                                 }
-                            }, { scope: 'email' });
-                        }
-                    });
-                }).catch(function (err) { return document.write(err); });
-                this.hubConnection.on("userConnected", function (user) {
-                    if (_this.users.getValue().filter(function (u) { return u.id === user.id; }).length === 0) {
-                        _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
-                    }
-                });
-                return [2 /*return*/];
-            });
-        });
-    };
-    SignalrService.prototype.stopConnection = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.hubConnection.stop()];
-                    case 1: return [2 /*return*/, _a.sent()];
+                            })];
+                    case 3:
+                        _a.sent();
+                        this.hubConnection.on("userConnected", function (user) {
+                            if (_this.users.getValue().filter(function (u) { return u.id === user.id; }).length === 0) {
+                                _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
+                            }
+                        });
+                        return [2 /*return*/];
                 }
             });
         });

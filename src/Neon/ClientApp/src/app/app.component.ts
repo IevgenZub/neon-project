@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.fbLibrary();
-    await this.signalrService.startConnection();
   }
 
  async fbLibrary() {

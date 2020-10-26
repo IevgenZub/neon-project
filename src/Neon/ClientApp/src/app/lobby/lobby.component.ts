@@ -14,7 +14,8 @@ export class LobbyComponent implements OnInit {
 
   constructor(private signalrService: SignalrService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.signalrService.startConnection();
     this.question$ = this.signalrService.question$;
     this.users$ = this.signalrService.users$;
   }
