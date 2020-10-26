@@ -39,8 +39,9 @@ namespace Neon.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await Task.FromResult(_users.RemoveAll(u => u.ConnectionId == Context.ConnectionId));
+            var user = _users.Single(u => u.ConnectionId == Context.ConnectionId);
+            _users.Remove(user);
+            await Clients.All.SendAsync("userDisconnected", user);
         }
-
     }
 }

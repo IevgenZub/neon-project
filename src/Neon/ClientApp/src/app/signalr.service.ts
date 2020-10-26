@@ -49,6 +49,12 @@ export class SignalrService {
         this.users.next([...this.users.getValue(), user]);
       }
     });
+
+    this.hubConnection.on("userDisconnected", (user: User) => {
+      if (this.users.getValue().filter(u => u.connectionId === user.connectionId).length !== 0) {
+        this.users.next(this.users.getValue().filter(u => u.connectionId !== user.connectionId));
+      }
+    });
 }
 
   private newFbUserOnline() {

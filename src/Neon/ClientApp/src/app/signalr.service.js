@@ -97,6 +97,11 @@ var SignalrService = /** @class */ (function () {
                                 _this.users.next(__spreadArrays(_this.users.getValue(), [user]));
                             }
                         });
+                        this.hubConnection.on("userDisconnected", function (user) {
+                            if (_this.users.getValue().filter(function (u) { return u.connectionId === user.connectionId; }).length !== 0) {
+                                _this.users.next(_this.users.getValue().filter(function (u) { return u.connectionId !== user.connectionId; }));
+                            }
+                        });
                         return [2 /*return*/];
                 }
             });
