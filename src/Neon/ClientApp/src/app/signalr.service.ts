@@ -15,11 +15,10 @@ export class SignalrService {
       .withUrl("/lobbyHub")
       .build();
 
-    this.question = new Subject();
-    this.question$ = this.question.asObservable();
-
     await this.hubConnection.start();
 
+    this.question = new Subject();
+    this.question$ = this.question.asObservable();
     this.hubConnection.stream("StreamQuestions").subscribe({
       next: question => this.question.next(question),
       error: _ => (_),
@@ -29,6 +28,18 @@ export class SignalrService {
     const users = await this.hubConnection.invoke("GetUsersOnline");
     this.users = new BehaviorSubject(users);
     this.users$ = this.users.asObservable();
+
+    this.hubConnection.on("userConnected", (user: User) => {
+      if (this.users.getValue().filter(u => u.id === user.id).length === 0) {
+        this.users.next([...this.users.getValue(), user]);
+      }
+    });
+
+    this.hubConnection.on("userDisconnected", (user: User) => {
+      if (this.users.getValue().filter(u => u.id === user.id).length !== 0) {
+        this.users.next(this.users.getValue().filter(u => u.id !== user.id));
+      }
+    });
 
     await window['FB'].getLoginStatus(response => {
       if (response.status === 'connected') {
@@ -41,18 +52,6 @@ export class SignalrService {
             console.log('User login failed');
           }
         }, { scope: 'email' });
-      }
-    });
-  
-    this.hubConnection.on("userConnected", (user: User) => {
-      if (this.users.getValue().filter(u => u.id === user.id).length === 0) {
-        this.users.next([...this.users.getValue(), user]);
-      }
-    });
-
-    this.hubConnection.on("userDisconnected", (user: User) => {
-      if (this.users.getValue().filter(u => u.id === user.id).length !== 0) {
-        this.users.next(this.users.getValue().filter(u => u.id !== user.id));
       }
     });
   }
