@@ -52,6 +52,10 @@ export class SignalrService {
     });
   }
 
+  public async stopConnection(): Promise<void> {
+    return await this.hubConnection.stop();
+  }
+
   private newFbUserOnline() {
     window["FB"].api("/me",
       { fields: "id, last_name, first_name, email, picture" },

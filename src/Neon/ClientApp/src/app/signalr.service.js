@@ -94,6 +94,16 @@ var SignalrService = /** @class */ (function () {
             });
         });
     };
+    SignalrService.prototype.stopConnection = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.hubConnection.stop()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     SignalrService.prototype.newFbUserOnline = function () {
         var _this = this;
         window["FB"].api("/me", { fields: "id, last_name, first_name, email, picture" }, function (userInfo) {
