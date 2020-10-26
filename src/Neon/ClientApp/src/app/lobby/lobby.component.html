@@ -24,11 +24,13 @@
     </ng-template>
   </div>
   <div class="col-md-4 col-xs-12">
-    <h3 class="text-center">Users Online</h3>  
-    <figure *ngFor="let user of users$ | async">
-      <img src={{user.imageUrl}} />
-      <figcaption class="small">{{user.name}}</figcaption>
-    </figure>
+    <h3 class="text-center">Users Online</h3>
+    <div *ngFor="let user of users$ | async">
+      <figure>
+        <img src={{user.imageUrl}} />
+        <figcaption class="small">{{user.name}}</figcaption>
+      </figure>
+    </div>
   </div>
 </div>
 

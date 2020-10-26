@@ -13,12 +13,11 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.fbLibrary();
+    await this.fbLibrary();
     await this.signalrService.startConnection();
   }
 
-  fbLibrary() {
-
+ async fbLibrary() {
     (window as any).fbAsyncInit = function () {
       window['FB'].init({
         appId: '586725345276662',
@@ -26,6 +25,7 @@ export class AppComponent implements OnInit {
         xfbml: true,
         version: 'v3.1'
       });
+
       window['FB'].AppEvents.logPageView();
     };
 
