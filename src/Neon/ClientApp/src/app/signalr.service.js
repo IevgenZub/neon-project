@@ -98,8 +98,8 @@ var SignalrService = /** @class */ (function () {
                             }
                         });
                         this.hubConnection.on("userDisconnected", function (user) {
-                            if (_this.users.getValue().filter(function (u) { return u.connectionId === user.connectionId; }).length !== 0) {
-                                _this.users.next(_this.users.getValue().filter(function (u) { return u.connectionId !== user.connectionId; }));
+                            if (_this.users.getValue().filter(function (u) { return u.id === user.id; }).length !== 0) {
+                                _this.users.next(_this.users.getValue().filter(function (u) { return u.id !== user.id; }));
                             }
                         });
                         return [2 /*return*/];

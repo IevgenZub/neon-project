@@ -51,8 +51,8 @@ export class SignalrService {
     });
 
     this.hubConnection.on("userDisconnected", (user: User) => {
-      if (this.users.getValue().filter(u => u.connectionId === user.connectionId).length !== 0) {
-        this.users.next(this.users.getValue().filter(u => u.connectionId !== user.connectionId));
+      if (this.users.getValue().filter(u => u.id === user.id).length !== 0) {
+        this.users.next(this.users.getValue().filter(u => u.id !== user.id));
       }
     });
 }
