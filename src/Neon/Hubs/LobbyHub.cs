@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
@@ -42,6 +43,16 @@ namespace Neon.Hubs
         public ChannelReader<Question> StreamQuestions()
         {
             return _questionTicker.StreamQuestions().AsChannelReader(10);
+        }
+
+        public async Task SubmitAnswer(Answer answer)
+        {
+            if (_questionTicker.IsCorrectAnswer(answer))
+            {
+                var user = _users.Single(u => u.Id == answer.UserId);
+                user.Score += 100;
+                await Clients.All.SendAsync("userScored", user);
+            }
         }
     }
 }

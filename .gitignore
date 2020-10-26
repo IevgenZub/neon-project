@@ -231,3 +231,5 @@ _Pvt_Extensions
 .fake/
 /src/Neon/ClientApp/src/app/signalr.service.js.map
 /src/Neon/ClientApp/src/app/signalr.service.js
+/src/Neon/ClientApp/src/app/contracts.js.map
+/src/Neon/ClientApp/src/app/contracts.js

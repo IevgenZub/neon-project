@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SignalrService } from '../signalr.service';
-import { User } from '../user-info';
-import { Question } from '../question';
+import { User, Question } from '../contracts';
 
 @Component({
   selector: 'app-lobby',
@@ -18,6 +17,10 @@ export class LobbyComponent implements OnInit {
     await this.signalrService.startConnection();
     this.question$ = this.signalrService.question$;
     this.users$ = this.signalrService.users$;
+  }
+
+  onSubmit(questionId: string) {
+    this.signalrService.newAnswer(questionId, "");
   }
 }
 
