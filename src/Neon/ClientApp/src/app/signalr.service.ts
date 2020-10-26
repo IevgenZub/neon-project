@@ -55,18 +55,12 @@ export class SignalrService {
         this.users.next(this.users.getValue().filter(u => u.id !== user.id));
       }
     });
-}
+  }
 
   private newFbUserOnline() {
-    window["FB"].api("/me",
-      { fields: "id, last_name, first_name, email, picture" },
-      userInfo =>
-        this.hubConnection.send("NewOnlineUser", new User(
-          userInfo.id,
-          userInfo.first_name,
-          userInfo.picture.data.url,
-          "",
-          this.hubConnection.connectionId
-        )));
-  }
+     window["FB"].api("/me",
+       { fields: "id, last_name, first_name, email, picture" },
+       userInfo => this.hubConnection.send("NewOnlineUser",
+         new User(userInfo.id, userInfo.first_name, userInfo.picture.data.url, "", this.hubConnection.connectionId)));
+  }  
 }

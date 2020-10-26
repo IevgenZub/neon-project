@@ -109,9 +109,7 @@ var SignalrService = /** @class */ (function () {
     };
     SignalrService.prototype.newFbUserOnline = function () {
         var _this = this;
-        window["FB"].api("/me", { fields: "id, last_name, first_name, email, picture" }, function (userInfo) {
-            return _this.hubConnection.send("NewOnlineUser", new user_info_1.User(userInfo.id, userInfo.first_name, userInfo.picture.data.url, "", _this.hubConnection.connectionId));
-        });
+        window["FB"].api("/me", { fields: "id, last_name, first_name, email, picture" }, function (userInfo) { return _this.hubConnection.send("NewOnlineUser", new user_info_1.User(userInfo.id, userInfo.first_name, userInfo.picture.data.url, "", _this.hubConnection.connectionId)); });
     };
     return SignalrService;
 }());
