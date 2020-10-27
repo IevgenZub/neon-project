@@ -72,11 +72,7 @@ export class SignalrService {
   }
 
   public async newAnswer(questionId: string, answer: string) {
-    this.hubConnection.send("SubmitAnswer",
-      new Answer(
-        questionId,
-        answer,
-        this.userId));
+    await this.hubConnection.invoke("SubmitAnswer", new Answer(questionId, answer, this.userId));
   }
 
   private newFbUserOnline() {
@@ -84,7 +80,7 @@ export class SignalrService {
        { fields: "id, last_name, first_name, email, picture" },
        userInfo => {
          this.userId = userInfo.id;
-         this.hubConnection.send("NewOnlineUser",
+         this.hubConnection.invoke("NewOnlineUser",
            new User(
              userInfo.id,
              userInfo.first_name,

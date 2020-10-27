@@ -10,6 +10,7 @@ import { User, Question } from '../contracts';
 export class LobbyComponent implements OnInit {
   public question$: Observable<Question>;
   public users$: Observable<Array<User>>;
+  public isScoreLoaded = true;
 
   constructor(private signalrService: SignalrService) {}
 
@@ -19,8 +20,10 @@ export class LobbyComponent implements OnInit {
     this.users$ = this.signalrService.users$;
   }
 
-  onSubmit(questionId: string, answer: string) {
-    this.signalrService.newAnswer(questionId, answer);
+  async onSubmit(questionId: string, answer: string) {
+    this.isScoreLoaded = false;
+    await this.signalrService.newAnswer(questionId, answer);
+    setTimeout(_ => { this.isScoreLoaded = true; }, 300);
   }
 }
 

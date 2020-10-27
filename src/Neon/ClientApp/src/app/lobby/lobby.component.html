@@ -22,18 +22,36 @@
   </div>
   <div class="col-md-4 col-xs-12">
     <h3 class="text-center">Users Online</h3>
-      <div *ngFor="let user of users$ | async; let i = index" class="row" style="font-size:x-large; vertical-align:middle">
-        <div class="col-1">
-          {{i + 1}}
-        </div>
-        <div class="col-10">
-          <img style="margin:3px" src={{user.imageUrl}} />
-          {{user.name}}
-        </div>
-        <div class="col-1">
-          {{user.score}}
+    <table class="table table-striped" align="center">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Player</th>
+          <th>Points</th>
+          <th>Total Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users$ | async; let i = index">
+          <td>{{i+1}}</td>
+          <td>
+            <div *ngIf="isScoreLoaded; else loading">
+              <img src="{{user.imageUrl}}" alt="NA" style="margin-right:3px">
+              <a>{{user.name}}</a>
+            </div>
+          </td>
+          <td>{{user.score}}</td>
+          <td>{{user.score}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #loading>
+      <div class="row">
+        <div class="col text-center">
+          Loading...
         </div>
       </div>
+    </ng-template>
   </div>
 </div>
 
