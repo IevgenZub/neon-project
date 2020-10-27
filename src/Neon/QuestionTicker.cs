@@ -70,7 +70,7 @@ namespace Neon
             _correctAnswers.Add(questionС.Id, questionС.Answers[0]);
 
             var questions = new List<Question>() { questionA, questionB, questionС };
-            var randomNumber = new Random().Next(0, 2);
+            var randomNumber = new Random().Next(0, 3);
             var result = questions[randomNumber];
 
             return await Task.FromResult(result);

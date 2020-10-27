@@ -19,8 +19,8 @@ export class LobbyComponent implements OnInit {
     this.users$ = this.signalrService.users$;
   }
 
-  onSubmit(questionId: string) {
-    this.signalrService.newAnswer(questionId, "");
+  onSubmit(questionId: string, answer: string) {
+    this.signalrService.newAnswer(questionId, answer);
   }
 }
 

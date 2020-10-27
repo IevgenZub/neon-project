@@ -43,7 +43,16 @@ export class SignalrService {
 
     this.hubConnection.on("userScored", (user: User) => {
       if (this.users.getValue().filter(u => u.id === user.id).length !== 0) {
-        this.users.next([...this.users.getValue().filter(u => u.id !== user.id), user]);
+        const nextUsers = [...this.users.getValue().filter(u => u.id !== user.id), user];
+        this.users.next(nextUsers.sort((a,b) => {
+          if (a.score > b.score) {
+            return -1;
+          } else if (a.score < b.score) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }));
       }
     });
 
@@ -63,7 +72,7 @@ export class SignalrService {
   }
 
   public async newAnswer(questionId: string, answer: string) {
-    this.hubConnection.send("NewOnlineUser",
+    this.hubConnection.send("SubmitAnswer",
       new Answer(
         questionId,
         answer,
