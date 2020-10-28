@@ -16,7 +16,7 @@ namespace Neon
         
         public QuestionTicker()
         {
-            _updateInterval = TimeSpan.FromMilliseconds(3000);
+            _updateInterval = TimeSpan.FromMilliseconds(5000);
             _timer = new Timer(NextQuestion, null, _updateInterval, _updateInterval);
             _subject = new Subject<Question>();
             _correctAnswers = new Dictionary<string, string>();

@@ -11,6 +11,8 @@ export class LobbyComponent implements OnInit {
   public question$: Observable<Question>;
   public users$: Observable<Array<User>>;
   public isScoreLoaded = true;
+  public questionSeconds: number;
+  public questionInterval: NodeJS.Timeout;
 
   constructor(private signalrService: SignalrService) {}
 
@@ -18,6 +20,16 @@ export class LobbyComponent implements OnInit {
     await this.signalrService.startConnection();
     this.question$ = this.signalrService.question$;
     this.users$ = this.signalrService.users$;
+
+    this.question$.subscribe(_ => {
+      clearTimeout(this.questionInterval);
+      this.questionSeconds = 5;
+      this.questionInterval = setInterval(() => {
+        if (this.questionSeconds !== 0) {
+          this.questionSeconds -= 1;
+        }
+      }, 1000);
+    });
   }
 
   async onSubmit(questionId: string, answer: string) {
