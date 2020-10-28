@@ -25,8 +25,8 @@ export class LobbyComponent implements OnInit {
       clearTimeout(this.questionInterval);
       this.questionSeconds = 5;
       this.questionInterval = setInterval(() => {
-        if (this.questionSeconds !== 0) {
-          this.questionSeconds -= 1;
+        if (this.questionSeconds > 0) {
+          this.questionSeconds--;
         }
       }, 1000);
     });
@@ -35,7 +35,7 @@ export class LobbyComponent implements OnInit {
   async onSubmit(questionId: string, answer: string) {
     this.isScoreLoaded = false;
     await this.signalrService.newAnswer(questionId, answer);
-    setTimeout(_ => { this.isScoreLoaded = true; }, 300);
+    setTimeout(_ => this.isScoreLoaded = true, 300);
   }
 }
 
