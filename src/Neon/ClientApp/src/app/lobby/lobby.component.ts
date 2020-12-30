@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SignalrService } from '../signalr.service';
-import { User, Question } from '../contracts';
+import { User, Question, Competition } from '../contracts';
 
 @Component({
   selector: 'app-lobby',
@@ -9,6 +9,7 @@ import { User, Question } from '../contracts';
 })
 export class LobbyComponent implements OnInit {
   public question$: Observable<Question>;
+  public competitions$: Observable<Array<Competition>>;
   public users$: Observable<Array<User>>;
   public isScoreLoaded = true;
   public questionSeconds: number;
@@ -20,6 +21,7 @@ export class LobbyComponent implements OnInit {
     await this.signalrService.startConnection();
     this.question$ = this.signalrService.question$;
     this.users$ = this.signalrService.users$;
+    this.competitions$ = this.signalrService.competitions$;
 
     this.question$.subscribe(_ => {
       clearTimeout(this.questionInterval);

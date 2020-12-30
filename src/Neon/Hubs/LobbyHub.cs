@@ -12,6 +12,13 @@ namespace Neon.Hubs
     public class LobbyHub: Hub
     {
         private static readonly List<User> _users = new List<User>();
+        private static readonly List<Competition> _competitions = new List<Competition>()
+        {
+            new Competition { Id = "1", Status = "Open", StartDate = DateTime.Now.AddMinutes(1) },
+            new Competition { Id = "2", Status = "Open", StartDate = DateTime.Now.AddMinutes(2) },
+            new Competition { Id = "3", Status = "Open", StartDate = DateTime.Now.AddMinutes(3) }
+        };
+
         private readonly QuestionTicker _questionTicker;
 
         public LobbyHub(QuestionTicker questionTicker)
@@ -38,6 +45,11 @@ namespace Neon.Hubs
         public List<User> GetUsersOnline()
         {
             return _users;
+        }
+
+        public List<Competition> GetOngoingCompetitions()
+        {
+            return _competitions;
         }
 
         public ChannelReader<Question> StreamQuestions()

@@ -1,4 +1,11 @@
 <h2>Real-time Quizz</h2>
+<h3>Competitions</h3>
+<div class="row">
+  <div class="col" *ngFor="let competition of competitions$ | async">
+    {{competition.id}}
+    {{competition.status}}
+  </div>
+</div>
 <div class="row">
   <div class="col-md-8 col-xs-12">
     <h3 class="text-center">Question</h3>

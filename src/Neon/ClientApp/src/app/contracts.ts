@@ -20,3 +20,12 @@ export class Answer {
     public selectedAnswer: string,
     public userId: string) { }
 }
+
+export class Competition {
+  constructor(
+    public id: string,
+    public status: string,
+    public startDate: Date,
+    public users: User[],
+    public questions: Question[]) { }
+}

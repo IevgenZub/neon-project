@@ -1,12 +1,14 @@
 import * as signalR from "@microsoft/signalr";
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
-import { User, Question, Answer } from "./contracts";
+import { User, Question, Answer, Competition } from "./contracts";
 
 export class SignalrService {
   private userId: string;
   private hubConnection: signalR.HubConnection;
   private users: BehaviorSubject<Array<User>>;
   public users$: Observable<Array<User>>;
+  private competitions: BehaviorSubject<Array<Competition>>;
+  public competitions$: Observable<Array<Competition>>;
   private question: Subject<Question>;
   public question$: Observable<Question>;
 
@@ -28,6 +30,10 @@ export class SignalrService {
     const users = await this.hubConnection.invoke("GetUsersOnline");
     this.users = new BehaviorSubject(users);
     this.users$ = this.users.asObservable();
+
+    const competitions = await this.hubConnection.invoke("GetOngoingCompetitions");
+    this.competitions = new BehaviorSubject(competitions);
+    this.competitions$ = this.competitions.asObservable();
 
     this.hubConnection.on("userConnected", (user: User) => {
       if (this.users.getValue().filter(u => u.id === user.id).length === 0) {
